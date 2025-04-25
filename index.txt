@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro e Inicio de Sesión</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fef9f4;
+      color: #4a4a4a;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(200, 170, 170, 0.2);
+    }
+
+    h2, h3 {
+      color: #d46a6a;
+    }
+
+    input, button {
+      padding: 10px;
+      width: 100%;
+      margin: 5px 0 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #f7caca;
+      border: none;
+      color: #4a4a4a;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #f4b9b9;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .card {
+      background-color: #fff3f3;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      box-shadow: 0 4px 8px rgba(150, 120, 120, 0.2);
+    }
+
+    .card img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    #mensaje {
+      color: #a86666;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      background-color: #fceeee;
+      padding: 0.8rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="registro">
+    <h2>🌷 Registro</h2>
+    <div id="mensaje" class="hidden"></div>
+    <input type="email" id="regEmail" placeholder="Correo electrónico">
+    <input type="password" id="regPass" placeholder="Contraseña">
+    <button onclick="registrar()">Registrarse</button>
+  </div>
+
+  <div id="login" class="hidden">
+    <h2>💖 Iniciar Sesión</h2>
+    <input type="email" id="loginEmail" placeholder="Correo electrónico">
+    <input type="password" id="loginPass" placeholder="Contraseña">
+    <button onclick="iniciarSesion()">Iniciar Sesión</button>
+  </div>
+
+  <div id="contenido" class="hidden">
+    <h2>✨ Nuestra Historia</h2>
+    <p>
+      Desde 2005, nuestra misión ha sido crear conexiones reales con nuestros clientes.
+      Confiabilidad, calidez y servicio humano son los pilares que nos definen.
+    </p>
+
+    <h3>🎀 Nuestras Tarjetas</h3>
+
+    <div class="card">
+      <img src="https://cdn-icons-png.flaticon.com/512/1250/1250713.png" alt="Tarjeta Clásica">
+      <strong>Tarjeta Clásica</strong>
+      <p>Sin cuota anual, ideal para compras cotidianas con control y facilidad.</p>
+    </div>
+
+    <div class="card">
+      <img src="https://cdn-icons-png.flaticon.com/512/2910/2910793.png" alt="Tarjeta Oro">
+      <strong>Tarjeta Oro</strong>
+      <p>Descuentos exclusivos en viajes, restaurantes y experiencias únicas.</p>
+    </div>
+
+    <div class="card">
+      <img src="https://cdn-icons-png.flaticon.com/512/1216/1216895.png" alt="Tarjeta Platino">
+      <strong>Tarjeta Platino</strong>
+      <p>Accede a salas VIP, seguros premium y programas de recompensa avanzados.</p>
+    </div>
+  </div>
+
+  <script>
+    const mensaje = document.getElementById('mensaje');
+
+    function mostrarContenido() {
+      document.getElementById('registro').classList.add('hidden');
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('contenido').classList.remove('hidden');
+    }
+
+    function registrar() {
+      const email = document.getElementById('regEmail').value;
+      const pass = document.getElementById('regPass').value;
+
+      if (email && pass) {
+        localStorage.setItem('usuario', JSON.stringify({ email, pass }));
+        mensaje.textContent = '🌟 Registro exitoso. Redirigiendo...';
+        mensaje.classList.remove('hidden');
+        setTimeout(() => mostrarContenido(), 1500);
+      } else {
+        mensaje.textContent = 'Por favor, completa todos los campos.';
+        mensaje.classList.remove('hidden');
+      }
+    }
+
+    function iniciarSesion() {
+      const email = document.getElementById('loginEmail').value;
+      const pass = document.getElementById('loginPass').value;
+      const usuarioGuardado = JSON.parse(localStorage.getItem('usuario'));
+
+      if (usuarioGuardado && email === usuarioGuardado.email && pass === usuarioGuardado.pass) {
+        mostrarContenido();
+      } else {
+        alert('Correo o contraseña incorrectos.');
+      }
+    }
+
+    // Verifica si el usuario ya está registrado o logueado
+    window.onload = function () {
+      const usuarioGuardado = JSON.parse(localStorage.getItem('usuario'));
+      if (usuarioGuardado) {
+        mostrarContenido();
+      } else {
+        document.getElementById('registro').classList.remove('hidden');
+      }
+    };
+  </script>
+
+</body>
+</html>
+
